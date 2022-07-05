@@ -173,27 +173,41 @@ class SubscriptionItem extends BaseSubscriptionItem implements SubscriptionItemC
 
 You then need to register your entities on the CashierServiceProvider
 ```php
-/**
- * Register services.
- *
- * @return void
- */
-public function register()
+<?php
+
+namespace App\Providers;
+
+use App\Entities\Subscription;
+use App\Entities\SubscriptionItem;
+use App\Entities\User;
+use Illuminate\Support\ServiceProvider;
+use BulletDigitalSolutions\DoctrineCashier\Cashier;
+
+class CashierServiceProvider extends ServiceProvider
 {
-    Cashier::ignoreMigrations();
-    Cashier::useCustomerModel(User::class);
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Cashier::ignoreMigrations();
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Cashier::useSubscriptionModel(Subscription::class);
+        Cashier::useSubscriptionItemModel(SubscriptionItem::class);
+        Cashier::useCustomerModel(User::class);
+    }
 }
 
-/**
- * Bootstrap services.
- *
- * @return void
- */
-public function boot()
-{
-    Cashier::useSubscriptionModel(Subscription::class);
-    Cashier::useSubscriptionItemModel(SubscriptionItem::class);
-}
 ```
 
 ### Testing

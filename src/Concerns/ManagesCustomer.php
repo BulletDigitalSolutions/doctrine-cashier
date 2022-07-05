@@ -2,11 +2,8 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Concerns;
 
-use BulletDigitalSolutions\DoctrineCashier\Cashier\CustomerBalanceTransaction;
-use Illuminate\Support\Collection;
 use Laravel\Cashier\Concerns\ManagesCustomer as BaseManagesCustomer;
 use Laravel\Cashier\Exceptions\CustomerAlreadyCreated;
-use Stripe\Exception\InvalidRequestException as StripeInvalidRequestException;
 
 trait ManagesCustomer
 {
@@ -38,7 +35,7 @@ trait ManagesCustomer
      * @param  array  $options
      * @return \Stripe\Customer
      *
-     * @throws \Laravel\Cashier\Exceptions\CustomerAlreadyCreated
+     * @throws CustomerAlreadyCreated
      */
     public function createAsStripeCustomer(array $options = [])
     {
@@ -100,140 +97,5 @@ trait ManagesCustomer
     public function stripePhone()
     {
         return $this->phone;
-    }
-
-    /**
-     * Get the address that should be synced to Stripe.
-     *
-     * @return array|null
-     */
-    public function stripeAddress()
-    {
-//        TODO
-        // return [
-        //     'city' => 'Little Rock',
-        //     'country' => 'US',
-        //     'line1' => '1 Main St.',
-        //     'line2' => 'Apartment 5',
-        //     'postal_code' => '72201',
-        //     'state' => 'Arkansas',
-        // ];
-    }
-
-    /**
-     * Update the underlying Stripe customer information for the model.
-     *
-     * @param  array  $options
-     * @return \Stripe\Customer
-     */
-    public function updateStripeCustomer(array $options = [])
-    {
-        return $this->stripe()->customers->update(
-            $this->getStripeId(), $options
-        );
-    }
-
-    /**
-     * Get the Stripe customer for the model.
-     *
-     * @param  array  $expand
-     * @return \Stripe\Customer
-     */
-    public function asStripeCustomer(array $expand = [])
-    {
-        $this->assertCustomerExists();
-
-        return $this->stripe()->customers->retrieve(
-            $this->getStripeId(), ['expand' => $expand]
-        );
-    }
-
-    /**
-     * Apply a new amount to the customer's balance.
-     *
-     * @param  int  $amount
-     * @param  string|null  $description
-     * @param  array  $options
-     * @return CustomerBalanceTransaction
-     */
-    public function applyBalance($amount, $description = null, array $options = [])
-    {
-        $this->assertCustomerExists();
-
-        $transaction = $this->stripe()
-            ->customers
-            ->createBalanceTransaction($this->getStripeId(), array_filter(array_merge([
-                'amount' => $amount,
-                'currency' => $this->preferredCurrency(),
-                'description' => $description,
-            ], $options)));
-
-        return new CustomerBalanceTransaction($this, $transaction);
-    }
-
-    /**
-     * Get a collection of the customer's TaxID's.
-     *
-     * @return \Illuminate\Support\Collection|\Stripe\TaxId[]
-     */
-    public function taxIds(array $options = [])
-    {
-        $this->assertCustomerExists();
-
-        return new Collection(
-            $this->stripe()->customers->allTaxIds($this->getStripeId(), $options)->data
-        );
-    }
-
-    /**
-     * Find a TaxID by ID.
-     *
-     * @return \Stripe\TaxId|null
-     */
-    public function findTaxId($id)
-    {
-        $this->assertCustomerExists();
-
-        try {
-            return $this->stripe()->customers->retrieveTaxId(
-                $this->getStripeId(), $id, []
-            );
-        } catch (StripeInvalidRequestException $exception) {
-            //
-        }
-    }
-
-    /**
-     * Create a TaxID for the customer.
-     *
-     * @param  string  $type
-     * @param  string  $value
-     * @return \Stripe\TaxId
-     */
-    public function createTaxId($type, $value)
-    {
-        $this->assertCustomerExists();
-
-        return $this->stripe()->customers->createTaxId($this->getStripeId(), [
-            'type' => $type,
-            'value' => $value,
-        ]);
-    }
-
-    /**
-     * Delete a TaxID for the customer.
-     *
-     * @param  string  $id
-     * @return void
-     */
-    public function deleteTaxId($id)
-    {
-        $this->assertCustomerExists();
-
-        try {
-            $this->stripe()->customers->deleteTaxId($this->stripeId(), $id);
-        } catch (StripeInvalidRequestException $exception) {
-            //
-        }
     }
 }

@@ -3,12 +3,13 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
 use BulletDigitalSolutions\DoctrineCashier\Traits\Billable;
+use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Modelable;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 
 class BillableEntity
 {
-    use Billable, Timestampable;
+    use Billable, Timestampable, Modelable;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -100,5 +101,25 @@ class BillableEntity
     public function getIdAttribute()
     {
         return $this->getId();
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     * @return |null
+     */
+    public function __call($name, $arguments)
+    {
+        dd($name);
+
+        if (method_exists($this, $name)) {
+            return $this->$name($arguments);
+        }
+
+        if (method_exists($this->get(), $name)) {
+            return $this->get()->$name($arguments);
+        }
+
+        return null;
     }
 }

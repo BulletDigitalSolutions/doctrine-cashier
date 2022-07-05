@@ -2,48 +2,11 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Concerns;
 
-use BulletDigitalSolutions\DoctrineCashier\Cashier\PaymentMethod;
-use Illuminate\Support\Collection;
 use Laravel\Cashier\Concerns\ManagesPaymentMethods as BaseManagesPaymentMethods;
 
 trait ManagesPaymentMethods
 {
     use BaseManagesPaymentMethods;
-
-    /**
-     * Determines if the customer currently has a default payment method.
-     *
-     * @return bool
-     */
-    public function hasDefaultPaymentMethod()
-    {
-        return (bool) $this->getPmType();
-    }
-
-    /**
-     * Get a collection of the customer's payment methods of the given type.
-     *
-     * @param  string  $type
-     * @param  array  $parameters
-     * @return \Illuminate\Support\Collection|\Laravel\Cashier\PaymentMethod[]
-     */
-    public function paymentMethods($type = 'card', $parameters = [])
-    {
-        if (! $this->hasStripeId()) {
-            return new Collection();
-        }
-
-        $parameters = array_merge(['limit' => 24], $parameters);
-
-        // "type" is temporarily required by Stripe...
-        $paymentMethods = $this->stripe()->paymentMethods->all(
-            ['customer' => $this->stripeId(), 'type' => $type] + $parameters
-        );
-
-        return Collection::make($paymentMethods->data)->map(function ($paymentMethod) {
-            return new PaymentMethod($this, $paymentMethod);
-        });
-    }
 
     /**
      * Update customer's default payment method.
@@ -102,26 +65,5 @@ trait ManagesPaymentMethods
         }
 
         return $this;
-    }
-
-    /**
-     * Add a payment method to the customer.
-     *
-     * @param  \Stripe\PaymentMethod|string  $paymentMethod
-     * @return \Laravel\Cashier\PaymentMethod
-     */
-    public function addPaymentMethod($paymentMethod)
-    {
-        $this->assertCustomerExists();
-
-        $stripePaymentMethod = $this->resolveStripePaymentMethod($paymentMethod);
-
-        if ($stripePaymentMethod->customer !== $this->stripeId()) {
-            $stripePaymentMethod = $stripePaymentMethod->attach(
-                ['customer' => $this->stripeId()]
-            );
-        }
-
-        return new PaymentMethod($this, $stripePaymentMethod);
     }
 }

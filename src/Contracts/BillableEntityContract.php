@@ -48,4 +48,9 @@ interface BillableEntityContract
      * @return mixed
      */
     public function getIdAttribute();
+
+    /**
+     * @return mixed
+     */
+    public function getRepository();
 }
