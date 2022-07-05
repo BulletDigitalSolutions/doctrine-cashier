@@ -2,12 +2,11 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
+use BulletDigitalSolutions\DoctrineCashier\Traits\Billable;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
-use Illuminate\Database\Eloquent\Model;
 use Doctrine\ORM\Mapping as ORM;
-use Laravel\Cashier\Billable;
 
-class BillableEntity extends Model
+class BillableEntity
 {
     use Billable, Timestampable;
 
