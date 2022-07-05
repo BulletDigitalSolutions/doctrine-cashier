@@ -29,6 +29,7 @@ trait ManagesCustomer
         return ! is_null($this->getStripeId());
     }
 
+//    TODO: is this required?
     /**
      * Create a Stripe customer for the given model.
      *

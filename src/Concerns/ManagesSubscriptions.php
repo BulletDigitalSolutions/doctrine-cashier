@@ -16,6 +16,7 @@ trait ManagesSubscriptions
     public function subscription($name = 'default')
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq('name', $name));
+
         return $this->getSubscriptions()->matching($criteria)->first();
     }
 }
