@@ -2,20 +2,15 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Contracts;
 
-use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
-use Doctrine\ORM\Mapping as ORM;
-use Laravel\Cashier\Billable;
-
 interface BillableEntityContract
 {
-
     /**
      * @return mixed
      */
     public function getStripeId();
 
     /**
-     * @param mixed $stripeId
+     * @param  mixed  $stripeId
      */
     public function setStripeId($stripeId): void;
 
@@ -25,7 +20,7 @@ interface BillableEntityContract
     public function getPmType();
 
     /**
-     * @param mixed $pmType
+     * @param  mixed  $pmType
      */
     public function setPmType($pmType): void;
 
@@ -35,7 +30,7 @@ interface BillableEntityContract
     public function getPmLastFour();
 
     /**
-     * @param mixed $pmLastFour
+     * @param  mixed  $pmLastFour
      */
     public function setPmLastFour($pmLastFour): void;
 
@@ -45,7 +40,7 @@ interface BillableEntityContract
     public function getTrialEndsAt();
 
     /**
-     * @param mixed $trialEndsAt
+     * @param  mixed  $trialEndsAt
      */
     public function setTrialEndsAt($trialEndsAt): void;
 
@@ -53,5 +48,4 @@ interface BillableEntityContract
      * @return mixed
      */
     public function getIdAttribute();
-
 }

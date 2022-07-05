@@ -2,20 +2,15 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Contracts;
 
-use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
-use Doctrine\ORM\Mapping as ORM;
-
 interface SubscriptionItemContract
 {
-
     /**
      * @return mixed
      */
     public function getStripeId();
 
-
     /**
-     * @param mixed $stripeId
+     * @param  mixed  $stripeId
      */
     public function setStripeId($stripeId): void;
 
@@ -25,7 +20,7 @@ interface SubscriptionItemContract
     public function getStripeProduct();
 
     /**
-     * @param mixed $stripeProduct
+     * @param  mixed  $stripeProduct
      */
     public function setStripeProduct($stripeProduct): void;
 
@@ -35,7 +30,7 @@ interface SubscriptionItemContract
     public function getStripePrice();
 
     /**
-     * @param mixed $stripePrice
+     * @param  mixed  $stripePrice
      */
     public function setStripePrice($stripePrice): void;
 
@@ -45,8 +40,7 @@ interface SubscriptionItemContract
     public function getQuantity();
 
     /**
-     * @param mixed $quantity
+     * @param  mixed  $quantity
      */
     public function setQuantity($quantity): void;
-
 }

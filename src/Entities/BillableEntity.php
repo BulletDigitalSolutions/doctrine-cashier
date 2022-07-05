@@ -39,7 +39,7 @@ class BillableEntity
     }
 
     /**
-     * @param mixed $stripeId
+     * @param  mixed  $stripeId
      */
     public function setStripeId($stripeId): void
     {
@@ -55,7 +55,7 @@ class BillableEntity
     }
 
     /**
-     * @param mixed $pmType
+     * @param  mixed  $pmType
      */
     public function setPmType($pmType): void
     {
@@ -71,7 +71,7 @@ class BillableEntity
     }
 
     /**
-     * @param mixed $pmLastFour
+     * @param  mixed  $pmLastFour
      */
     public function setPmLastFour($pmLastFour): void
     {
@@ -87,7 +87,7 @@ class BillableEntity
     }
 
     /**
-     * @param mixed $trialEndsAt
+     * @param  mixed  $trialEndsAt
      */
     public function setTrialEndsAt($trialEndsAt): void
     {

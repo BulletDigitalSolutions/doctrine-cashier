@@ -2,9 +2,6 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Contracts;
 
-use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
-use Doctrine\ORM\Mapping as ORM;
-
 interface SubscriptionContract
 {
     /**
@@ -13,7 +10,7 @@ interface SubscriptionContract
     public function getName();
 
     /**
-     * @param mixed $name
+     * @param  mixed  $name
      */
     public function setName($name): void;
 
@@ -23,16 +20,17 @@ interface SubscriptionContract
     public function getStripeId();
 
     /**
-     * @param mixed $stripeId
+     * @param  mixed  $stripeId
      */
     public function setStripeId($stripeId): void;
+
     /**
      * @return mixed
      */
     public function getStripeStatus();
 
     /**
-     * @param mixed $stripeStatus
+     * @param  mixed  $stripeStatus
      */
     public function setStripeStatus($stripeStatus): void;
 
@@ -42,7 +40,7 @@ interface SubscriptionContract
     public function getStripePrice();
 
     /**
-     * @param mixed $stripePrice
+     * @param  mixed  $stripePrice
      */
     public function setStripePrice($stripePrice): void;
 
@@ -52,7 +50,7 @@ interface SubscriptionContract
     public function getQuantity();
 
     /**
-     * @param mixed $quantity
+     * @param  mixed  $quantity
      */
     public function setQuantity($quantity): void;
 
@@ -62,7 +60,7 @@ interface SubscriptionContract
     public function getTrialEndsAt();
 
     /**
-     * @param mixed $trialEndsAt
+     * @param  mixed  $trialEndsAt
      */
     public function setTrialEndsAt($trialEndsAt): void;
 
@@ -72,9 +70,7 @@ interface SubscriptionContract
     public function getEndsAt();
 
     /**
-     * @param mixed $endsAt
+     * @param  mixed  $endsAt
      */
     public function setEndsAt($endsAt): void;
-
-
 }

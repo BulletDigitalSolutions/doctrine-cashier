@@ -2,8 +2,6 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Concerns;
 
-//TODO - This is not required anymore
-
 use Laravel\Cashier\Concerns\PerformsCharges as BasePerformsCharges;
 use Laravel\Cashier\Payment;
 

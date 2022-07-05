@@ -19,5 +19,4 @@ trait Billable
     use ManagesPaymentMethods;
     use ManagesSubscriptions;
     use PerformsCharges;
-
 }

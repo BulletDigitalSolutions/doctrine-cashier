@@ -3,8 +3,8 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
-use Laravel\Cashier\Subscription as BaseSubscription;
 use Doctrine\ORM\Mapping as ORM;
+use Laravel\Cashier\Subscription as BaseSubscription;
 
 class Subscription extends BaseSubscription
 {
@@ -54,7 +54,7 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @param mixed $name
+     * @param  mixed  $name
      */
     public function setName($name): void
     {
@@ -70,7 +70,7 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @param mixed $stripeId
+     * @param  mixed  $stripeId
      */
     public function setStripeId($stripeId): void
     {
@@ -86,7 +86,7 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @param mixed $stripeStatus
+     * @param  mixed  $stripeStatus
      */
     public function setStripeStatus($stripeStatus): void
     {
@@ -102,7 +102,7 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @param mixed $stripePrice
+     * @param  mixed  $stripePrice
      */
     public function setStripePrice($stripePrice): void
     {
@@ -118,7 +118,7 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @param mixed $quantity
+     * @param  mixed  $quantity
      */
     public function setQuantity($quantity): void
     {
@@ -134,7 +134,7 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @param mixed $trialEndsAt
+     * @param  mixed  $trialEndsAt
      */
     public function setTrialEndsAt($trialEndsAt): void
     {
@@ -150,7 +150,7 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @param mixed $endsAt
+     * @param  mixed  $endsAt
      */
     public function setEndsAt($endsAt): void
     {

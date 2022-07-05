@@ -1,16 +1,12 @@
 <?php
 
-//TODO: Is this required?
-
 namespace BulletDigitalSolutions\DoctrineCashier\Cashier;
 
+use BulletDigitalSolutions\DoctrineCashier\Exceptions\InvalidCustomerBalanceTransaction;
 use Laravel\Cashier\CustomerBalanceTransaction as BaseCustomerBalanceTransaction;
-use BulletDigitalSolutions\Gunshot\Cashier\Exceptions\InvalidCustomerBalanceTransaction;
-use Stripe\CustomerBalanceTransaction as StripeCustomerBalanceTransaction;
 
 class CustomerBalanceTransaction extends BaseCustomerBalanceTransaction
 {
-
     /**
      * Create a new CustomerBalanceTransaction instance.
      *

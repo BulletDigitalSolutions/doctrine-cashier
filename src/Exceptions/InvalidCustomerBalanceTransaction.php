@@ -2,7 +2,7 @@
 
 //TODO: Is this required?
 
-namespace BulletDigitalSolutions\DoctrineCashier\Cashier\Exceptions;
+namespace BulletDigitalSolutions\DoctrineCashier\Exceptions;
 
 use Laravel\Cashier\Exceptions\InvalidCustomerBalanceTransaction as BaseInvalidCustomerBalanceTransaction;
 use Stripe\CustomerBalanceTransaction as StripeCustomerBalanceTransaction;

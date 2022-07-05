@@ -1,11 +1,9 @@
 <?php
 
-//TODO: Is this required?
-
 namespace BulletDigitalSolutions\DoctrineCashier\Cashier;
 
-use BulletDigitalSolutions\Gunshot\Cashier\Exceptions\InvalidPaymentMethod;
-use BulletDigitalSolutions\Gunshot\Concerns\Cashier\ManagesPaymentMethods;
+use BulletDigitalSolutions\DoctrineCashier\Concerns\ManagesPaymentMethods;
+use BulletDigitalSolutions\DoctrineCashier\Exceptions\InvalidPaymentMethod;
 use Laravel\Cashier\PaymentMethod as BasePaymentMethod;
 use Stripe\PaymentMethod as StripePaymentMethod;
 
@@ -14,7 +12,7 @@ class PaymentMethod extends BasePaymentMethod
     /**
      * Create a new PaymentMethod instance.
      *
-     * @param  ManagesPaymentMethods $owner
+     * @param  ManagesPaymentMethods  $owner
      * @param  \Stripe\PaymentMethod  $paymentMethod
      * @return void
      *

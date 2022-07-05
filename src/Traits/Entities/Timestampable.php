@@ -11,6 +11,7 @@ trait Timestampable
     /**
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="create")
+     *
      * @var DateTime
      */
     protected $createdAt;
@@ -18,6 +19,7 @@ trait Timestampable
     /**
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
+     *
      * @var DateTime
      */
     protected $updatedAt;
@@ -39,7 +41,7 @@ trait Timestampable
     }
 
     /**
-     * @param DateTime $createdAt
+     * @param  DateTime  $createdAt
      */
     public function setCreatedAt($createdAt)
     {
@@ -47,7 +49,7 @@ trait Timestampable
     }
 
     /**
-     * @param DateTime $updatedAt
+     * @param  DateTime  $updatedAt
      */
     public function setUpdatedAt($updatedAt)
     {

@@ -2,8 +2,6 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Concerns;
 
-//TODO - This is not required anymore
-
 use Doctrine\Common\Collections\Criteria;
 use Laravel\Cashier\Concerns\ManagesSubscriptions as BaseManagesSubscriptions;
 
@@ -47,7 +45,7 @@ trait ManagesSubscriptions
     public function subscription($name = 'default')
     {
         $criteria = Criteria::create()->where(Criteria::expr()->eq('name', $name));
+
         return $this->getSubscriptions()->matching($criteria)->first();
     }
-
 }

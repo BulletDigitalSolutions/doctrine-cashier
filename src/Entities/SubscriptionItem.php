@@ -3,8 +3,8 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
-use Laravel\Cashier\SubscriptionItem as BaseSubscriptionItem;
 use Doctrine\ORM\Mapping as ORM;
+use Laravel\Cashier\SubscriptionItem as BaseSubscriptionItem;
 
 class SubscriptionItem extends BaseSubscriptionItem
 {
@@ -39,7 +39,7 @@ class SubscriptionItem extends BaseSubscriptionItem
     }
 
     /**
-     * @param mixed $stripeId
+     * @param  mixed  $stripeId
      */
     public function setStripeId($stripeId): void
     {
@@ -55,7 +55,7 @@ class SubscriptionItem extends BaseSubscriptionItem
     }
 
     /**
-     * @param mixed $stripeProduct
+     * @param  mixed  $stripeProduct
      */
     public function setStripeProduct($stripeProduct): void
     {
@@ -71,7 +71,7 @@ class SubscriptionItem extends BaseSubscriptionItem
     }
 
     /**
-     * @param mixed $stripePrice
+     * @param  mixed  $stripePrice
      */
     public function setStripePrice($stripePrice): void
     {
@@ -87,7 +87,7 @@ class SubscriptionItem extends BaseSubscriptionItem
     }
 
     /**
-     * @param mixed $quantity
+     * @param  mixed  $quantity
      */
     public function setQuantity($quantity): void
     {
@@ -218,5 +218,4 @@ class SubscriptionItem extends BaseSubscriptionItem
 //            $this->stripeId(), ['expand' => $expand]
 //        );
 //    }
-
 }

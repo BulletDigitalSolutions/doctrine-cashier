@@ -1,15 +1,12 @@
 <?php
 
-//TODO - This is not required anymore
-
 namespace BulletDigitalSolutions\DoctrineCashier\Concerns;
 
-use Doctrine\ORM\EntityManagerInterface;
+use BulletDigitalSolutions\DoctrineCashier\Cashier\CustomerBalanceTransaction;
 use Illuminate\Support\Collection;
-use BulletDigitalSolutions\Gunshot\Cashier\CustomerBalanceTransaction;
+use Laravel\Cashier\Concerns\ManagesCustomer as BaseManagesCustomer;
 use Laravel\Cashier\Exceptions\CustomerAlreadyCreated;
 use Stripe\Exception\InvalidRequestException as StripeInvalidRequestException;
-use Laravel\Cashier\Concerns\ManagesCustomer as BaseManagesCustomer;
 
 trait ManagesCustomer
 {
@@ -74,7 +71,6 @@ trait ManagesCustomer
 
         return $customer;
     }
-
 
     /**
      * Get the name that should be synced to Stripe.
@@ -240,7 +236,4 @@ trait ManagesCustomer
             //
         }
     }
-
-
-
 }

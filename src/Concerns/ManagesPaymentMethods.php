@@ -2,9 +2,7 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Concerns;
 
-//TODO - This is not required anymore
-
-use BulletDigitalSolutions\Gunshot\Cashier\PaymentMethod;
+use BulletDigitalSolutions\DoctrineCashier\Cashier\PaymentMethod;
 use Illuminate\Support\Collection;
 use Laravel\Cashier\Concerns\ManagesPaymentMethods as BaseManagesPaymentMethods;
 
@@ -105,7 +103,6 @@ trait ManagesPaymentMethods
 
         return $this;
     }
-
 
     /**
      * Add a payment method to the customer.

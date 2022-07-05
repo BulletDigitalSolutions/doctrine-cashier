@@ -137,6 +137,7 @@
       <path value="$PROJECT_DIR$/vendor/laravel-doctrine/orm" />
       <path value="$PROJECT_DIR$/vendor/laravel-doctrine/migrations" />
       <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/laravel/pint" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />
