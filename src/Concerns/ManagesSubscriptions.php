@@ -2,7 +2,8 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Concerns;
 
-use Doctrine\Common\Collections\Criteria;
+use BulletDigitalSolutions\DoctrineCashier\Cashier;
+use BulletDigitalSolutions\DoctrineEloquent\Relationships\HasMany;
 use Laravel\Cashier\Concerns\ManagesSubscriptions as BaseManagesSubscriptions;
 
 trait ManagesSubscriptions
@@ -10,13 +11,26 @@ trait ManagesSubscriptions
     use BaseManagesSubscriptions;
 
     /**
+     * Get a subscription instance by name.
+     *
      * @param  string  $name
      * @return \Laravel\Cashier\Subscription|null
      */
     public function subscription($name = 'default')
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('name', $name));
-
-        return $this->getSubscriptions()->matching($criteria)->first();
+        return $this->subscriptions()->where('name', $name)->first();
     }
+
+    /**
+     * @return HasMany
+     */
+    public function subscriptions()
+    {
+        $hasMany = new HasMany($this, Cashier::$subscriptionModel);
+
+        return $hasMany->orderBy('created_at', 'desc');
+        // return $this->hasMany(Cashier::$subscriptionModel, $this->getForeignKey())->orderBy('created_at', 'desc');
+    }
+
+    //TODO: Public final function
 }

@@ -1,7 +1,5 @@
 <?php
 
-//TODO - This is not required anymore
-
 namespace BulletDigitalSolutions\DoctrineCashier\Traits;
 
 use BulletDigitalSolutions\DoctrineCashier\Concerns\ManagesCustomer;

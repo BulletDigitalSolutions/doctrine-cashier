@@ -4,10 +4,13 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Traits;
 
+use BulletDigitalSolutions\DoctrineEloquent\Traits\ModelableRepository;
 use Illuminate\Support\Arr;
 
 trait BillableRepository
 {
+    use ModelableRepository;
+
     /**
      * @param $entity
      * @param $stripeId
@@ -17,6 +20,7 @@ trait BillableRepository
     {
         $entity->setStripeId($stripeId);
 
+        // app em
         $this->_em->persist($entity);
         $this->_em->flush();
 
@@ -37,6 +41,7 @@ trait BillableRepository
             $entity->setPmLastFour(optional($paymentMethod)->$type->last4);
         }
 
+        // app em
         $this->_em->persist($entity);
         $this->_em->flush();
 
@@ -58,6 +63,7 @@ trait BillableRepository
             $entity->setPmLastFour($attributes['pm_last_four']);
         }
 
+        // app em
         $this->_em->persist($entity);
         $this->_em->flush();
 

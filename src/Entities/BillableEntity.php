@@ -3,8 +3,8 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
 use BulletDigitalSolutions\DoctrineCashier\Traits\Billable;
-use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Modelable;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
+use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\Modelable;
 use Doctrine\ORM\Mapping as ORM;
 
 class BillableEntity
@@ -110,8 +110,6 @@ class BillableEntity
      */
     public function __call($name, $arguments)
     {
-        dd($name);
-
         if (method_exists($this, $name)) {
             return $this->$name($arguments);
         }

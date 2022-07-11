@@ -9,26 +9,6 @@ trait ManagesCustomer
 {
     use BaseManagesCustomer;
 
-    /**
-     * Retrieve the Stripe customer ID.
-     *
-     * @return string|null
-     */
-    public function stripeId()
-    {
-        return $this->getStripeId();
-    }
-
-    /**
-     * Determine if the customer has a Stripe customer ID.
-     *
-     * @return bool
-     */
-    public function hasStripeId()
-    {
-        return ! is_null($this->getStripeId());
-    }
-
 //    TODO: is this required?
     /**
      * Create a Stripe customer for the given model.

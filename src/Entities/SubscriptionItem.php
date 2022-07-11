@@ -94,6 +94,11 @@ class SubscriptionItem extends BaseSubscriptionItem
         $this->quantity = $quantity;
     }
 
+//    public function subscription()
+//    {
+//        return
+//    }
+
 //    /**
 //     * Update the quantity of the subscription item.
 //     *
