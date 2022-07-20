@@ -43,13 +43,14 @@ class UserRepository extends CoreRepository implements UserContract
 ```
 
 You should then extend the Subscription and SubscriptionItem entities
+
 ```php
 <?php
 
 namespace App\Entities;
 
-use BulletDigitalSolutions\DoctrineCashier\Contracts\SubscriptionContract;
-use BulletDigitalSolutions\DoctrineCashier\Entities\Subscription as BaseSubscription;
+use BulletDigitalSolutions\DoctrineCashier\Contracts\UserSubscriptionContract;
+use BulletDigitalSolutions\DoctrineCashier\Entities\UserSubscription as BaseSubscription;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -58,7 +59,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  * @Gedmo\Loggable(logEntryClass="App\Entities\Audit")
  */
-class Subscription extends BaseSubscription implements SubscriptionContract
+class Subscription extends BaseSubscription implements UserSubscriptionContract
 {
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -112,8 +113,8 @@ class Subscription extends BaseSubscription implements SubscriptionContract
 
 namespace App\Entities;
 
-use BulletDigitalSolutions\DoctrineCashier\Contracts\SubscriptionItemContract;
-use BulletDigitalSolutions\DoctrineCashier\Entities\SubscriptionItem as BaseSubscriptionItem;
+use BulletDigitalSolutions\DoctrineCashier\Contracts\UserSubscriptionItemContract;
+use BulletDigitalSolutions\DoctrineCashier\Entities\UserSubscriptionItem as BaseSubscriptionItem;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -122,7 +123,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  * @Gedmo\Loggable(logEntryClass="App\Entities\Audit")
  */
-class SubscriptionItem extends BaseSubscriptionItem implements SubscriptionItemContract
+class SubscriptionItem extends BaseSubscriptionItem implements UserSubscriptionItemContract
 {
     /**
      * @ORM\Column(type="integer", nullable=false)
