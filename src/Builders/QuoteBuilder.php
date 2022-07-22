@@ -2,10 +2,13 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Builders;
 
+use BulletDigitalSolutions\DoctrineCashier\Entities\UserQuote;
 use Carbon\Carbon;
+use DateTime;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use Laravel\Cashier\Concerns\AllowsCoupons;
 use Laravel\Cashier\Concerns\HandlesTaxes;
 use Laravel\Cashier\Concerns\InteractsWithPaymentBehavior;
@@ -69,6 +72,16 @@ class QuoteBuilder
     protected $metadata = [];
 
     /**
+     * @var mixed|null
+     */
+    protected $userQuote = null;
+
+    /**
+     * @var null|Carbon
+     */
+    protected $expiresAt = null;
+
+    /**
      * Create a new subscription builder instance.
      *
      * @param  mixed  $owner
@@ -76,10 +89,11 @@ class QuoteBuilder
      * @param  string|string[]|array[]  $prices
      * @return void
      */
-    public function __construct($owner, $name, $prices = [])
+    public function __construct($owner, $name, $prices = [], $userQuote = null)
     {
         $this->name = $name;
         $this->owner = $owner;
+        $this->userQuote = $userQuote;
 
         foreach ((array) $prices as $price) {
             $this->price($price);
@@ -112,6 +126,17 @@ class QuoteBuilder
         } else {
             $this->items[] = $options;
         }
+
+        return $this;
+    }
+
+    /**
+     * @param  Carbon  $dateTime
+     * @return $this
+     */
+    public function expires(Carbon $dateTime)
+    {
+        $this->expiresAt = $dateTime;
 
         return $this;
     }
@@ -230,6 +255,23 @@ class QuoteBuilder
     }
 
     /**
+     * @param $paymentMethod
+     * @param  array  $customerOptions
+     * @param  array  $subscriptionOptions
+     * @return \Laravel\Cashier\Subscription
+     *
+     * @throws \Laravel\Cashier\Exceptions\IncompletePayment
+     */
+    public function save($paymentMethod = null, array $customerOptions = [], array $subscriptionOptions = [])
+    {
+        if (! $this->userQuote) {
+            return $this->create($paymentMethod, $customerOptions, $subscriptionOptions);
+        }
+
+        return $this->update($paymentMethod, $customerOptions, $subscriptionOptions);
+    }
+
+    /**
      * Create a new Stripe subscription.
      *
      * @param  \Stripe\PaymentMethod|string|null  $paymentMethod
@@ -258,6 +300,37 @@ class QuoteBuilder
     }
 
     /**
+     * @param $paymentMethod
+     * @param  array  $customerOptions
+     * @param  array  $subscriptionOptions
+     * @return \Laravel\Cashier\Subscription
+     *
+     * @throws \Stripe\Exception\ApiErrorException
+     */
+    public function update($paymentMethod = null, array $customerOptions = [], array $subscriptionOptions = [])
+    {
+        if (empty($this->items)) {
+            throw new Exception('At least one price is required when starting quotes.');
+        }
+
+        if (! $this->userQuote) {
+            throw new Exception('Stripe ID is required to update a quote.');
+        }
+
+        $stripeCustomer = $this->getStripeCustomer($paymentMethod, $customerOptions);
+
+        $stripeQuote = $this->owner->stripe()->quotes->update($this->userQuote->getStripeId(),
+            array_merge(
+                ['customer' => $stripeCustomer->id],
+                $this->buildPayload(),
+                $subscriptionOptions
+            )
+        );
+
+        return $this->updateQuote($stripeQuote);
+    }
+
+    /**
      * Create the Eloquent Subscription.
      *
      * @param  \Stripe\Subscription  $stripeSubscription
@@ -265,12 +338,84 @@ class QuoteBuilder
      */
     protected function createQuote(StripeQuote $stripeQuote)
     {
+        $dt = new DateTime();
+        $dt->setTimestamp($stripeQuote->expires_at);
+
         $quote = $this->owner->quotes()->create([
             'name' => $this->name,
             'stripe_id' => $stripeQuote->id,
+            'expires_at' => $dt,
+            'discounts' => $this->getDiscountsArray(),
         ]);
 
+        $lineItems = $this->owner->stripe()->quotes->allLineItems($stripeQuote->id);
+
+        foreach ($lineItems->data as $lineItem) {
+            $quote->items()->create([
+                'stripe_id' => $lineItem->id,
+                'quantity' => $lineItem->quantity,
+                'amount_total' => $lineItem->amount_total,
+                'stripe_product' => $lineItem->price->product,
+                'stripe_price' => $lineItem->price->id,
+            ]);
+        }
+
         return $quote;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDiscountsArray()
+    {
+        $discounts = [];
+
+        if ($this->couponId) {
+            $discounts[] = $this->couponId;
+        }
+
+        if ($this->promotionCodeId) {
+            $discounts[] = $this->promotionCodeId;
+        }
+
+        return $discounts;
+    }
+
+    /**
+     * Update the Eloquent Quote.
+     *
+     * @param  \Stripe\Subscription  $stripeSubscription
+     * @return \Laravel\Cashier\Subscription
+     */
+    protected function updateQuote(StripeQuote $stripeQuote)
+    {
+        dd($stripeQuote);
+        $dt = new DateTime();
+        $dt->setTimestamp($stripeQuote->expires_at);
+
+        $this->userQuote->update([
+            'name' => $this->name,
+            'stripe_id' => $stripeQuote->id,
+            'expires_at' => $dt,
+            'promo_code' => $this->promotionCodeId,
+            'coupon_code' => $this->couponId,
+        ]);
+
+        $this->userQuote->items()->delete();
+
+        $lineItems = $this->owner->stripe()->quotes->allLineItems($stripeQuote->id);
+
+        foreach ($lineItems->data as $lineItem) {
+            $this->userQuote->items()->create([
+                'stripe_id' => $lineItem->id,
+                'quantity' => $lineItem->quantity,
+                'amount_total' => $lineItem->amount_total,
+                'stripe_product' => $lineItem->price->product,
+                'stripe_price' => $lineItem->price->id,
+            ]);
+        }
+
+        return $this->userQuote;
     }
 
     /**
@@ -301,18 +446,40 @@ class QuoteBuilder
         $payload = array_filter([
             'automatic_tax' => $this->automaticTaxPayload(),
             'billing_cycle_anchor' => $this->billingCycleAnchor,
-            'coupon' => $this->couponId,
             'metadata' => $this->metadata,
-            'line_items' => Collection::make($this->items)->values()->all(),
-            'promotion_code' => $this->promotionCodeId,
             'trial_end' => $this->getTrialEndForPayload(),
+            'discounts' => $this->getDiscountArray(),
         ]);
+
+        if ($this->expiresAt) {
+            $payload['expires_at'] = $this->expiresAt->timestamp;
+        }
+
+        if ($this->items) {
+            $payload['line_items'] = Collection::make($this->items)->values()->all();
+        }
 
         if ($taxRates = $this->getTaxRatesForPayload()) {
             $payload['default_tax_rates'] = $taxRates;
         }
 
         return $payload;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDiscountArray()
+    {
+        $discounts = [];
+
+        if ($this->couponId) {
+            $discounts['coupon'] = $this->couponId;
+        }
+
+        dd($discounts);
+
+        return $discounts;
     }
 
     /**
@@ -366,8 +533,12 @@ class QuoteBuilder
         return $this->items;
     }
 
-    public static function edit($id)
+    /**
+     * @param  UserQuote  $quote
+     * @return QuoteBuilder
+     */
+    public static function fromQuote(UserQuote $quote, $name, $prices)
     {
-
+        return new self($quote->owner(), $name, $prices, $quote);
     }
 }

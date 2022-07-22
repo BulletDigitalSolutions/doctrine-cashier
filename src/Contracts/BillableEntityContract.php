@@ -49,6 +49,8 @@ interface BillableEntityContract
      */
     public function getIdAttribute();
 
+    public function getCheckoutSessions();
+
     /**
      * @return mixed
      */

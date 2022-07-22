@@ -2,7 +2,10 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier;
 
+use BulletDigitalSolutions\DoctrineCashier\Entities\UserPaymentSession;
+use BulletDigitalSolutions\DoctrineCashier\Entities\UserPaymentSessionItem;
 use BulletDigitalSolutions\DoctrineCashier\Entities\UserQuote;
+use BulletDigitalSolutions\DoctrineCashier\Entities\UserQuoteItem;
 use Laravel\Cashier\Cashier as BaseCashier;
 use Stripe\Customer as StripeCustomer;
 
@@ -23,11 +26,18 @@ class Cashier extends BaseCashier
     public static $customerModel = 'App\\Entities\\User';
 
     /**
-     * The subscription model class name.
+     * The quote model class name.
      *
      * @var string
      */
     public static $quoteModel = UserQuote::class;
+
+    /**
+     * The quote item model class name.
+     *
+     * @var string
+     */
+    public static $quoteItemModel = UserQuoteItem::class;
 
     /**
      * Get the customer instance by its Stripe ID.
@@ -51,5 +61,24 @@ class Cashier extends BaseCashier
     public static function useQuoteModel($quoteModel)
     {
         static::$quoteModel = $quoteModel;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getQuoteModel(): string
+    {
+        return self::$quoteModel;
+    }
+
+    /**
+     * Set the quote item model class name.
+     *
+     * @param  string  $quoteItemModel
+     * @return void
+     */
+    public static function useQuoteItemModel($quoteItemModel)
+    {
+        static::$quoteItemModel = $quoteItemModel;
     }
 }

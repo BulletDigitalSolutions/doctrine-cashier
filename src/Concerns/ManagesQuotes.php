@@ -21,6 +21,36 @@ trait ManagesQuotes
     }
 
     /**
+     * @param $name
+     * @param $prices
+     * @return QuoteBuilder
+     */
+    public function newOrUpdateLatestQuote($name, $prices = [])
+    {
+        $quote = $this->getLatestQuote();
+
+        if ($quote) {
+            return $quote->builder($name, $prices);
+        }
+
+        return $this->newQuote($name, $prices);
+    }
+
+    /**
+     * @return null
+     */
+    public function getLatestQuote()
+    {
+        // TODO: Not expired at
+        return $this->quotes()
+            ->where('cancelled_at', null)
+            ->where('accepted_at', null)
+            ->where('finalised_at', null)
+            ->where('expires_at', '>', now())
+            ->first();
+    }
+
+    /**
      * Get a quote instance by id.
      *
      * @param  string  $name
@@ -36,7 +66,8 @@ trait ManagesQuotes
      */
     public function quotes()
     {
-        $hasMany = new HasMany($this, Cashier::$quoteModel, null, 'user');
+        $hasMany = new HasMany($this, Cashier::$quoteModel, null, 'user', 'getQuotes');
+
         return $hasMany->orderBy('created_at', 'desc');
     }
 }
