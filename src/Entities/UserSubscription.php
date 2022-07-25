@@ -2,13 +2,16 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
+use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
+use BulletDigitalSolutions\DoctrineEloquent\Relationships\HasMany;
+use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\EntityAndModel;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 use Laravel\Cashier\Subscription as BaseSubscription;
 
 class UserSubscription extends BaseSubscription
 {
-    use Timestampable;
+    use Timestampable, EntityAndModel;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -156,28 +159,17 @@ class UserSubscription extends BaseSubscription
     {
         $this->endsAt = $endsAt;
     }
-
-    // TODO
-//    /**
-//     * Get the model related to the subscription.
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-//     */
-//    public function owner()
-//    {
-//        $model = Cashier::$customerModel;
 //
-//        return $this->belongsTo($model, (new $model)->getForeignKey());
-//    }
+    /**
+     * Get the subscription items related to the subscription.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function items()
+    {
+        return new HasMany($this, DoctrineCashier::$subscriptionItemModel, null, 'user_subscription_id', 'getItems');
 
-//    // TODO
-//    /**
-//     * Get the subscription items related to the subscription.
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-//     */
-//    public function items()
-//    {
-//        return $this->hasMany(Cashier::$subscriptionItemModel);
-//    }
+//        return $this->hasMany(DoctrineCashier::$subscriptionItemModel);
+    }
+
 }

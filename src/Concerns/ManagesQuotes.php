@@ -3,7 +3,7 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Concerns;
 
 use BulletDigitalSolutions\DoctrineCashier\Builders\QuoteBuilder;
-use BulletDigitalSolutions\DoctrineCashier\Cashier;
+use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
 use BulletDigitalSolutions\DoctrineEloquent\Relationships\HasMany;
 
 trait ManagesQuotes
@@ -66,7 +66,7 @@ trait ManagesQuotes
      */
     public function quotes()
     {
-        $hasMany = new HasMany($this, Cashier::$quoteModel, null, 'user', 'getQuotes');
+        $hasMany = new HasMany($this, DoctrineCashier::$quoteModel, null, 'user', 'getQuotes');
 
         return $hasMany->orderBy('created_at', 'desc');
     }

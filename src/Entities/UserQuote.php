@@ -3,7 +3,7 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
 use BulletDigitalSolutions\DoctrineCashier\Builders\QuoteBuilder;
-use BulletDigitalSolutions\DoctrineCashier\Cashier;
+use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
 use BulletDigitalSolutions\DoctrineEloquent\Relationships\HasMany;
 use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\Modelable;
@@ -227,7 +227,7 @@ class UserQuote
      */
     public function items()
     {
-        return new HasMany($this, Cashier::$quoteItemModel, null, 'quote', 'getItems');
+        return new HasMany($this, DoctrineCashier::$quoteItemModel, null, 'quote', 'getItems');
     }
 
     /**
