@@ -3,15 +3,21 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
 use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
+use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
+use BulletDigitalSolutions\DoctrineEloquent\Relationships\BelongsTo;
 use BulletDigitalSolutions\DoctrineEloquent\Relationships\HasMany;
 use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\EntityAndModel;
-use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
+use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\Modelable;
 use Doctrine\ORM\Mapping as ORM;
 use Laravel\Cashier\Subscription as BaseSubscription;
 
 class UserSubscription extends BaseSubscription
 {
-    use Timestampable, EntityAndModel;
+    use Timestampable, Modelable;
+
+    protected $fillable = [
+      'stripe_status',
+    ];
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -159,7 +165,7 @@ class UserSubscription extends BaseSubscription
     {
         $this->endsAt = $endsAt;
     }
-//
+
     /**
      * Get the subscription items related to the subscription.
      *
@@ -172,4 +178,16 @@ class UserSubscription extends BaseSubscription
 //        return $this->hasMany(DoctrineCashier::$subscriptionItemModel);
     }
 
+    /**
+     * Get the subscription as a Stripe subscription object.
+     *
+     * @param  array  $expand
+     * @return \Stripe\Subscription
+     */
+    public function asStripeSubscription(array $expand = [])
+    {
+        return DoctrineCashier::stripe()->subscriptions->retrieve(
+            $this->getStripeId(), ['expand' => $expand]
+        );
+    }
 }

@@ -17,4 +17,26 @@ class WebhookController extends BaseWebhookController
     {
         return DoctrineCashier::findBillable($stripeId);
     }
+
+//    TODO: Make this work via doctrine-eloquent
+    /**
+     * Handle a canceled customer from a Stripe subscription.
+     *
+     * @param  array  $payload
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function handleCustomerSubscriptionDeleted(array $payload)
+    {
+        if ($user = $this->getUserByStripeId($payload['data']['object']['customer'])) {
+            $subscriptions = $user->subscriptions()->get()->filter(function ($subscription) use ($payload) {
+                return $subscription->stripe_id === $payload['data']['object']['id'];
+            });
+
+            foreach ($subscriptions as $subscription) {
+                $subscription->markAsCanceled();
+            }
+        }
+
+        return $this->successMethod();
+    }
 }

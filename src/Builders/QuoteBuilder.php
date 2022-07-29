@@ -389,7 +389,6 @@ class QuoteBuilder
      */
     protected function updateQuote(StripeQuote $stripeQuote)
     {
-        dd($stripeQuote);
         $dt = new DateTime();
         $dt->setTimestamp($stripeQuote->expires_at);
 
@@ -476,8 +475,6 @@ class QuoteBuilder
         if ($this->couponId) {
             $discounts['coupon'] = $this->couponId;
         }
-
-        dd($discounts);
 
         return $discounts;
     }
