@@ -3,7 +3,6 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
-use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\EntityAndModel;
 use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\Modelable;
 use Doctrine\ORM\Mapping as ORM;
 use Laravel\Cashier\SubscriptionItem as BaseSubscriptionItem;
