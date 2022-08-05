@@ -23,7 +23,7 @@
         "laravel-doctrine/orm": "^1.7",
         "illuminate/support": "^8.0",
         "laravel/cashier": "^13.12",
-        "bulletdigitalsolutions/doctrine-eloquent": "dev-master"
+        "bulletdigitalsolutions/doctrine-eloquent": "8.x-dev"
     },
     "require-dev": {
         "laravel/pint": "^0.2.3",

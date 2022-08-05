@@ -6,6 +6,7 @@ use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
 use BulletDigitalSolutions\DoctrineEloquent\Relationships\HasMany;
 use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\Modelable;
+use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 use Laravel\Cashier\Subscription as BaseSubscription;
 
@@ -187,5 +188,21 @@ class UserSubscription extends BaseSubscription
         return DoctrineCashier::stripe()->subscriptions->retrieve(
             $this->getStripeId(), ['expand' => $expand]
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->getUser();
+    }
+
+    /**
+     * @return bool
+     */
+    public function onGracePeriod()
+    {
+        return $this->getEndsAt() && $this->getEndsAt() >= Carbon::now();
     }
 }
