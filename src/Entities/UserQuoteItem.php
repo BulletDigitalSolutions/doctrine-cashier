@@ -5,9 +5,8 @@ namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
 use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\Modelable;
 use Doctrine\ORM\Mapping as ORM;
-use Laravel\Cashier\SubscriptionItem as BaseSubscriptionItem;
 
-class UserSubscriptionItem extends BaseSubscriptionItem
+class UserQuoteItem
 {
     use Timestampable, Modelable;
 
@@ -30,14 +29,6 @@ class UserSubscriptionItem extends BaseSubscriptionItem
      * @ORM\Column(type="integer", nullable=true)
      */
     protected $quantity;
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @return mixed

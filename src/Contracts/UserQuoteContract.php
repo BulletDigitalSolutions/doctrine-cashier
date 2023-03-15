@@ -57,5 +57,15 @@ interface UserQuoteContract
     /**
      * @return mixed
      */
+    public function getItems();
+
+    /**
+     * @param  mixed  $items
+     */
+    public function setItems($items): void;
+
+    /**
+     * @return mixed
+     */
     public function getRepository();
 }

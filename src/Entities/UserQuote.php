@@ -3,9 +3,12 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
 use BulletDigitalSolutions\DoctrineCashier\Builders\QuoteBuilder;
+use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
+use BulletDigitalSolutions\DoctrineEloquent\Relationships\HasMany;
 use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\Modelable;
 use Doctrine\ORM\Mapping as ORM;
+use Laravel\Cashier\Checkout;
 
 class UserQuote
 {
@@ -15,6 +18,26 @@ class UserQuote
      * @ORM\Column(type="string", nullable=false, unique=true)
      */
     protected $stripeId;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $name;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $promoCode;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $couponCode;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $expiresAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -50,6 +73,54 @@ class UserQuote
     /**
      * @return mixed
      */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param  mixed  $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPromoCode()
+    {
+        return $this->promoCode;
+    }
+
+    /**
+     * @param  mixed  $promoCode
+     */
+    public function setPromoCode($promoCode): void
+    {
+        $this->promoCode = $promoCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCouponCode()
+    {
+        return $this->couponCode;
+    }
+
+    /**
+     * @param  mixed  $couponCode
+     */
+    public function setCouponCode($couponCode): void
+    {
+        $this->couponCode = $couponCode;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getStripePlanId()
     {
         return $this->stripePlanId;
@@ -77,6 +148,22 @@ class UserQuote
     public function setQuantity($quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * @param  mixed  $expiresAt
+     */
+    public function setExpiresAt($expiresAt): void
+    {
+        $this->expiresAt = $expiresAt;
     }
 
     /**
@@ -136,6 +223,14 @@ class UserQuote
     }
 
     /**
+     * @return HasMany
+     */
+    public function items()
+    {
+        return new HasMany($this, DoctrineCashier::$quoteItemModel, null, 'quote', 'getItems');
+    }
+
+    /**
      * @return mixed
      */
     public function retrieve()
@@ -192,7 +287,7 @@ class UserQuote
         }
 
         $sub = $this->owner()->stripe()->quotes->accept($this->getStripeId());
-        dd($sub->subscription);
+
         try {
             $this->setAcceptedAt(new \DateTime());
             $this->save();
@@ -204,8 +299,39 @@ class UserQuote
         }
     }
 
-    public function update()
+    /**
+     * @return QuoteBuilder
+     */
+    public function builder($name = null, $prices = [])
     {
-        return new QuoteBuilder($this->owner(), null, null, );
+        if (! $name) {
+            $name = $this->getName();
+        }
+
+        if (! $prices) {
+            $prices = $this->getPriceStrings();
+        }
+
+        return QuoteBuilder::fromQuote($this, $name, $prices);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriceStrings()
+    {
+        return $this->items()->get()->map(function ($item) {
+            return $item->stripe_price;
+        })->toArray();
+    }
+
+    /**
+     * @param  array  $sessionOptions
+     * @param  array  $customerOptions
+     * @return Checkout
+     */
+    public function checkout(array $sessionOptions = [], array $customerOptions = [])
+    {
+        return Checkout::create($this->user, $sessionOptions, $customerOptions);
     }
 }

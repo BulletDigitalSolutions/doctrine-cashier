@@ -2,8 +2,8 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
+use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
 use Doctrine\ORM\Mapping as ORM;
-use Laravel\Cashier\Cashier;
 
 class Plan
 {
@@ -79,6 +79,11 @@ class Plan
         return $this->stripe()->products->retrieve($this->getStripePlan());
     }
 
+    /**
+     * @return \Stripe\Price|null
+     *
+     * @throws \Stripe\Exception\ApiErrorException
+     */
     public function defaultPrice()
     {
         if (! $this->getStripePlan()) {
@@ -87,7 +92,7 @@ class Plan
 
         $price = $this->retrieve()->price;
 
-        dd($this->stripe()->prices->retrieve($price));
+        return $this->stripe()->prices->retrieve($price);
     }
 
     /**
@@ -114,6 +119,6 @@ class Plan
      */
     public static function stripe(array $options = [])
     {
-        return Cashier::stripe($options);
+        return DoctrineCashier::stripe($options);
     }
 }

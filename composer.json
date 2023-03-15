@@ -21,7 +21,6 @@
         "illuminate/support": "^8.0",
         "laravel-doctrine/acl": "^1.0",
         "laravel-doctrine/extensions": "^1.0",
-        "laravel-doctrine/migrations": "*",
         "laravel-doctrine/orm": "^1.7",
         "laravel/cashier": "^13.12"
     },

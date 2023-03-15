@@ -114,7 +114,7 @@ class BillableEntity
             return $this->$name($arguments);
         }
 
-        if (method_exists($this->get(), $name)) {
+        if (method_exists($this, 'get'.$name)) {
             return $this->get()->$name($arguments);
         }
 

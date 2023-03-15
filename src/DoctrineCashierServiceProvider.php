@@ -2,7 +2,9 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class DoctrineCashierServiceProvider extends ServiceProvider
 {
@@ -11,6 +13,7 @@ class DoctrineCashierServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerRoutes();
         /*
          * Optional methods to load your package assets
          */
@@ -49,6 +52,9 @@ class DoctrineCashierServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Cashier::ignoreMigrations();
+        Cashier::ignoreRoutes();
+
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'doctrine-cashier');
 
@@ -56,5 +62,23 @@ class DoctrineCashierServiceProvider extends ServiceProvider
         $this->app->singleton('doctrine-cashier', function () {
             return new DoctrineCashier;
         });
+    }
+
+    /**
+     * Register the package routes.
+     *
+     * @return void
+     */
+    protected function registerRoutes()
+    {
+        if (DoctrineCashier::$registersRoutes) {
+            Route::group([
+                'prefix' => config('cashier.path'),
+                'namespace' => 'BulletDigitalSolutions\DoctrineCashier\Http\Controllers',
+                'as' => 'cashier.',
+            ], function () {
+                $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+            });
+        }
     }
 }

@@ -141,7 +141,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-doctrine/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/pint" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/bulletdigitalsolutions/doctrine-eloquent" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

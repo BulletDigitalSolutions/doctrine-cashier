@@ -2,13 +2,21 @@
 
 namespace BulletDigitalSolutions\DoctrineCashier\Entities;
 
+use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
 use BulletDigitalSolutions\DoctrineCashier\Traits\Entities\Timestampable;
+use BulletDigitalSolutions\DoctrineEloquent\Relationships\HasMany;
+use BulletDigitalSolutions\DoctrineEloquent\Traits\Entities\Modelable;
+use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 use Laravel\Cashier\Subscription as BaseSubscription;
 
 class UserSubscription extends BaseSubscription
 {
-    use Timestampable;
+    use Timestampable, Modelable;
+
+    protected $fillable = [
+        'stripe_status',
+    ];
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -157,27 +165,44 @@ class UserSubscription extends BaseSubscription
         $this->endsAt = $endsAt;
     }
 
-    // TODO
-//    /**
-//     * Get the model related to the subscription.
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-//     */
-//    public function owner()
-//    {
-//        $model = Cashier::$customerModel;
-//
-//        return $this->belongsTo($model, (new $model)->getForeignKey());
-//    }
+    /**
+     * Get the subscription items related to the subscription.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function items()
+    {
+        return new HasMany($this, DoctrineCashier::$subscriptionItemModel, null, 'user_subscription_id', 'getItems');
 
-//    // TODO
-//    /**
-//     * Get the subscription items related to the subscription.
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-//     */
-//    public function items()
-//    {
-//        return $this->hasMany(Cashier::$subscriptionItemModel);
-//    }
+//        return $this->hasMany(DoctrineCashier::$subscriptionItemModel);
+    }
+
+    /**
+     * Get the subscription as a Stripe subscription object.
+     *
+     * @param  array  $expand
+     * @return \Stripe\Subscription
+     */
+    public function asStripeSubscription(array $expand = [])
+    {
+        return DoctrineCashier::stripe()->subscriptions->retrieve(
+            $this->getStripeId(), ['expand' => $expand]
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->getUser();
+    }
+
+    /**
+     * @return bool
+     */
+    public function onGracePeriod()
+    {
+        return $this->getEndsAt() && $this->getEndsAt() >= Carbon::now();
+    }
 }

@@ -211,6 +211,8 @@ class CashierServiceProvider extends ServiceProvider
 
 ```
 
+[//]: # ([//]: # &#40;TODO&#41; Lifecycle callbacks need enabling for subscription and item)
+
 ### Testing
 
 ```bash
