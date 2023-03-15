@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4589871250124ccf994e4c26fce7d97b",
+    "content-hash": "edbe3b6ac41c36aeea4b06b64d2099e5",
     "packages": [
         {
             "name": "brick/math",
@@ -68,18 +68,28 @@
         },
         {
             "name": "bulletdigitalsolutions/doctrine-eloquent",
-            "version": "dev-master",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BulletDigitalSolutions/doctrine-eloquent.git",
+                "reference": "2154b5e8c97a6c07e857a28c965188c7c099098e"
+            },
             "dist": {
-                "type": "path",
-                "url": "../doctrine-eloquent",
-                "reference": "c56334a4db7f2406324639e296bf081a0d8d2b7c"
+                "type": "zip",
+                "url": "https://api.github.com/repos/BulletDigitalSolutions/doctrine-eloquent/zipball/2154b5e8c97a6c07e857a28c965188c7c099098e",
+                "reference": "2154b5e8c97a6c07e857a28c965188c7c099098e",
+                "shasum": ""
             },
             "require": {
                 "illuminate/support": "^8.0",
-                "laravel/pint": "^0.2.3",
+                "laravel-doctrine/acl": "^1.0",
+                "laravel-doctrine/extensions": "^1.0",
+                "laravel-doctrine/migrations": "*",
+                "laravel-doctrine/orm": "^1.7",
                 "php": "^7.4|^8.0"
             },
             "require-dev": {
+                "laravel/pint": "^0.2.3",
                 "orchestra/testbench": "^6.0",
                 "phpunit/phpunit": "^9.0"
             },
@@ -99,19 +109,7 @@
                     "BulletDigitalSolutions\\DoctrineEloquent\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "BulletDigitalSolutions\\DoctrineEloquent\\Tests\\": "tests"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ],
-                "test-coverage": [
-                    "vendor/bin/phpunit --coverage-html coverage"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -127,9 +125,11 @@
                 "bulletdigitalsolutions",
                 "doctrine-eloquent"
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/BulletDigitalSolutions/doctrine-eloquent/issues",
+                "source": "https://github.com/BulletDigitalSolutions/doctrine-eloquent/tree/v1.0.0"
+            },
+            "time": "2023-02-10T11:39:57+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -2284,72 +2284,6 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2022-06-28T14:30:38+00:00"
-        },
-        {
-            "name": "laravel/pint",
-            "version": "v0.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/pint.git",
-                "reference": "d0829631687c1238abdd660daac3d7218254b65c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/d0829631687c1238abdd660daac3d7218254b65c",
-                "reference": "d0829631687c1238abdd660daac3d7218254b65c",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ext-tokenizer": "*",
-                "ext-xml": "*",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.8.0",
-                "illuminate/view": "^9.17.0",
-                "laravel-zero/framework": "^9.1.1",
-                "mockery/mockery": "^1.5.0",
-                "nunomaduro/larastan": "^2.1.11",
-                "nunomaduro/termwind": "^1.10.1",
-                "pestphp/pest": "^1.21.3"
-            },
-            "bin": [
-                "builds/pint"
-            ],
-            "type": "project",
-            "autoload": {
-                "psr-4": {
-                    "App\\": "app/",
-                    "Database\\Seeders\\": "database/seeders/",
-                    "Database\\Factories\\": "database/factories/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nuno Maduro",
-                    "email": "enunomaduro@gmail.com"
-                }
-            ],
-            "description": "An opinionated code formatter for PHP.",
-            "homepage": "https://laravel.com",
-            "keywords": [
-                "format",
-                "formatter",
-                "lint",
-                "linter",
-                "php"
-            ],
-            "support": {
-                "issues": "https://github.com/laravel/pint/issues",
-                "source": "https://github.com/laravel/pint"
-            },
-            "time": "2022-07-04T16:04:06+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -7039,6 +6973,72 @@
             "time": "2020-07-09T08:09:16+00:00"
         },
         {
+            "name": "laravel/pint",
+            "version": "v0.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/pint.git",
+                "reference": "d0829631687c1238abdd660daac3d7218254b65c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/d0829631687c1238abdd660daac3d7218254b65c",
+                "reference": "d0829631687c1238abdd660daac3d7218254b65c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-tokenizer": "*",
+                "ext-xml": "*",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.8.0",
+                "illuminate/view": "^9.17.0",
+                "laravel-zero/framework": "^9.1.1",
+                "mockery/mockery": "^1.5.0",
+                "nunomaduro/larastan": "^2.1.11",
+                "nunomaduro/termwind": "^1.10.1",
+                "pestphp/pest": "^1.21.3"
+            },
+            "bin": [
+                "builds/pint"
+            ],
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "App\\": "app/",
+                    "Database\\Seeders\\": "database/seeders/",
+                    "Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                }
+            ],
+            "description": "An opinionated code formatter for PHP.",
+            "homepage": "https://laravel.com",
+            "keywords": [
+                "format",
+                "formatter",
+                "lint",
+                "linter",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/pint/issues",
+                "source": "https://github.com/laravel/pint"
+            },
+            "time": "2022-07-04T16:04:06+00:00"
+        },
+        {
             "name": "mockery/mockery",
             "version": "1.5.0",
             "source": {
@@ -9907,9 +9907,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "bulletdigitalsolutions/doctrine-eloquent": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
