@@ -3,6 +3,7 @@
 namespace BulletDigitalSolutions\DoctrineCashier\Http\Controllers;
 
 use BulletDigitalSolutions\DoctrineCashier\DoctrineCashier;
+use Doctrine\Common\Collections\Criteria;
 use Laravel\Cashier\Http\Controllers\WebhookController as BaseWebhookController;
 
 class WebhookController extends BaseWebhookController
