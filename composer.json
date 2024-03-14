@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "bulletdigitalsolutions/doctrine-eloquent": "1.0.0",
+        "bulletdigitalsolutions/doctrine-eloquent": "1.0.1",
         "illuminate/support": "^8.0",
         "laravel-doctrine/acl": "^1.0",
         "laravel-doctrine/extensions": "^1.0",
