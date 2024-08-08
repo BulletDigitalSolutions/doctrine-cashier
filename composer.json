@@ -22,7 +22,7 @@
         "laravel-doctrine/acl": "^1.0",
         "laravel-doctrine/extensions": "^1.0",
         "laravel-doctrine/orm": "^1.8|^2.0",
-        "laravel/cashier": "^13.12|^14.7"
+        "laravel/cashier": "^13.12|^14.7|^15.2"
     },
     "require-dev": {
         "laravel/pint": "^1.1"
