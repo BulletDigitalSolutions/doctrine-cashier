@@ -52,7 +52,6 @@ class DoctrineCashierServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Cashier::ignoreMigrations();
         Cashier::ignoreRoutes();
 
         // Automatically apply the package configuration
