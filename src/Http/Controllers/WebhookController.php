@@ -50,7 +50,7 @@ class WebhookController extends BaseWebhookController
                 $isSinglePrice = count($data['items']['data']) === 1;
 
                 $subscription = $user->subscriptions()->create([
-                    'name' => $data['metadata']['name'] ?? $this->newSubscriptionName($payload),
+                    'type' => $data['metadata']['type'] ?? $data['metadata']['name'] ?? $this->newSubscriptionType($payload),
                     'stripe_id' => $data['id'],
                     'stripe_status' => $data['status'],
                     'stripe_price' => $isSinglePrice ? $firstItem['price']['id'] : null,
