@@ -24,6 +24,11 @@ class UserSubscription extends BaseSubscription
     protected $name;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $type;
+
+    /**
      * @ORM\Column(type="string", nullable=false, unique=true)
      */
     protected $stripeId;
@@ -67,6 +72,17 @@ class UserSubscription extends BaseSubscription
     public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType($type): void
+    {
+        $this->type = $type;
+        $this->name = $type;
     }
 
     /**
@@ -205,4 +221,5 @@ class UserSubscription extends BaseSubscription
     {
         return $this->getEndsAt() && $this->getEndsAt() >= Carbon::now();
     }
+
 }
